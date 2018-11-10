@@ -1,0 +1,134 @@
+TestModel:
+    tests*=Test
+;
+
+Test:
+    (package=Package)?
+    class=Class
+    scenario=Scenario
+    'request' ':'
+    request=Request
+    cases*=Case
+;
+
+Package:
+    'package:' name=/[a-z][a-z0-9_]*(\.[a-z0-9_]+)+[0-9a-z_]/
+;
+
+Class:
+    'class' ':' name=ID
+;
+
+Scenario:
+    'scenario' ':' name=/[A-Za-z].*/
+;
+
+Case:
+    'response' ':'
+    response=Response
+    examples=Examples
+;
+
+Request:
+    ('query' | 'mutation') name=ID '{'
+    body=RequestBody
+    '}'
+;
+
+RequestBody:
+    name=ID ('(' arguments+=Argument[','] ')')? '{'
+    attributes*=Attribute
+    '}'
+;
+
+Attribute:
+    name=ID ('{' body=RequestBody '}')?
+;
+
+Argument:
+    name=ID ':' ArgumentValue
+;
+
+ArgumentValue:
+    SimpleValue | CompoundValue | TagValue
+;
+
+SimpleValue:
+    STRING | INT | FLOAT | BOOL
+;
+
+CompoundValue:
+    '{' (arguments*=Argument[','])? '}'
+;
+
+TagValue:
+    '<' name=ID '>'
+;
+
+SpecialTag:
+    '*' name=ID
+;
+
+Response:
+   (JsonObject | JsonArray)
+;
+
+Multiplier:
+    '*' '[' multiplier=INT ']'
+;
+
+JsonObject:
+    (Multiplier)?
+	'{'
+		members*=JsonMember[',']
+	'}'
+;
+
+JsonMember:
+	key=STRING ':' value=JsonValueWithTags
+;
+
+JsonValue:
+	JsonObject | STRING | JsonArray | BOOL | JsonNull | NUMBER
+;
+
+JsonValueWithTags:
+    JsonValue | TagValue | SpecialTag
+;
+
+JsonArray:
+	'[' values*=JsonValueWithTags ']'
+;
+
+JsonNull:
+  'null'
+;
+
+Examples:
+    'examples' ':'
+    RowSeparator
+    attributes=ExampleAttributes
+    RowSeparator
+    examples*=Example
+;
+
+RowSeparator:
+    ('=')+
+;
+
+ExampleAttributes:
+    '|' attributes*=ExampleAttribute['|'] '|'
+;
+
+ExampleAttribute:
+    SpecialTag | name=ID
+;
+
+JsonValueWithEmptyValue:
+    JsonValue | '*'
+;
+
+Example:
+    '|' values*=JsonValueWithEmptyValue['|'] '|'
+    RowSeparator?
+;
