@@ -1,7 +1,3 @@
-TestModel:
-    tests*=Test
-;
-
 Test:
     (package=Package)?
     class=Class
@@ -78,7 +74,6 @@ Multiplier:
 ;
 
 JsonObject:
-    (Multiplier)?
 	'{'
 		members*=JsonMember[',']
 	'}'
@@ -97,7 +92,7 @@ JsonValueWithTags:
 ;
 
 JsonArray:
-	'[' values*=JsonValueWithTags ']'
+	'[' (Multiplier)? values*=JsonValueWithTags ']'
 ;
 
 JsonNull:

@@ -1,0 +1,57 @@
+class:UsersSpec
+scenario:Retrieving information about one user
+
+request:
+query findOneUser {
+  user(id: <id>) {
+    id
+    username
+    firstName
+    lastName
+    address
+    phone
+    email
+    money
+  }
+}
+
+
+response:
+{
+  "data": {
+    "user": [
+      {
+        "id": <id>,
+        "username": <username>,
+        "firstName": <firstName>,
+        "lastName": <lastName>,
+        "address": <address>,
+        "phone": <phone>,
+        "email": <email>,
+        "money": <money>
+      }
+    ]
+  }
+}
+
+examples:
+=============================================================================================================================================================
+| *should                       | id | username          | firstName  | lastName   | address        | phone         | email                        | money  |
+=============================================================================================================================================================
+| "retrieve user with given id" | 1  | "miloradvojnovic" | "Milorad"  | "Vojnovic" | "Puskinova 27" | "06978954558" | "milorad.vojnovic@gmail.com" | 100000 |
+=============================================================================================================================================================
+
+
+response:
+{
+  "data": {
+    "user": null
+  }
+}
+
+examples:
+========================================================
+| *should                                           |id|
+========================================================
+| "retrieve that user with given id does not exist" |2 |
+========================================================

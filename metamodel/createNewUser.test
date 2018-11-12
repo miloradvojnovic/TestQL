@@ -1,0 +1,64 @@
+class:UsersSpec
+scenario:Retrieving information about one user
+
+request:
+mutation createUser {
+  createUser(input: {username: <username>, firstName: <firstName>, lastName: <lastName>, address: <address>, phone: <phone>, email: <email>, money: <money>}) {
+    id
+    username
+    firstName
+    lastName
+    address
+    phone
+    email
+    money
+  }
+}
+
+
+response:
+{
+  "data": {
+    "createUser": [
+      {
+        "id": <id>,
+        "username": <username>,
+        "firstName": <firstName>,
+        "lastName": <lastName>,
+        "address": <address>,
+        "phone": <phone>,
+        "email": <email>,
+        "money": <money>
+      }
+    ]
+  }
+}
+
+
+examples:
+==========================================================================================================================================================
+| *should                    | id | username          | firstName  | lastName   | address        | phone         | email                        | money  |
+==========================================================================================================================================================
+| "create user successfully" | 1  | "miloradvojnovic" | "Milorad"  | "Vojnovic" | "Puskinova 27" | "06978954558" | "milorad.vojnovic@gmail.com" | 100000 |
+==========================================================================================================================================================
+
+
+response:
+{
+  "data": null,
+  "errors": [
+    {
+      "message": <message>,
+      "type": <type>,
+      "path": <path>,
+      "locations": *any
+    }
+  ]
+}
+
+examples:
+=============================================================================================================================================================================================================================================
+| *should                                         | username    | firstName | lastName | address        | phone         | email                        | money  | message                                   | type         | path           |
+=============================================================================================================================================================================================================================================
+| "not create user because uniqueness constraint" | "zikazikic" | "Zika"    | "Zikic"  | "Puskinova 27" | "06978954558" | "zika.zikic@gmail.com"       | 100000 | "User with same username already exists." | "BadRequest" | ["createUser"] |
+=============================================================================================================================================================================================================================================
