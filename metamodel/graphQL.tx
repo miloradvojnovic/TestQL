@@ -1,14 +1,14 @@
 Test:
-    (package=Package)?
-    class=Class
+    package=Package
+    class_name=Class
     scenario=Scenario
     'request' ':'
-    request=Request
+    request=/(?ms)\"{3}(.*?)\"{3}/ //Request
     cases*=Case
 ;
 
 Package:
-    'package:' name=/[a-z][a-z0-9_]*(\.[a-z0-9_]+)+[0-9a-z_]/
+    'package' ':' name=/[a-z][a-z0-9_]*((\.[a-z0-9_]+)+[0-9a-z_])?/
 ;
 
 Class:
@@ -16,23 +16,37 @@ Class:
 ;
 
 Scenario:
-    'scenario' ':' name=/[A-Za-z].*/
+    'scenario' ':' name=/[A-Za-z0-9].*/
 ;
 
 Case:
     'response' ':'
-    response=Response
+    response=/(?ms)\"{3}(.*?)\"{3}/    //Response
     examples=Examples
 ;
 
 Request:
-    ('query' | 'mutation') name=ID '{'
-    body=RequestBody
+    type=RequestType name=ID '{'
+    body=RequestBodyWithArgs
+    '}'
+;
+
+RequestType:
+    name='query' | 'mutation'
+;
+
+RequestBodyWithArgs:
+    name=ID ('(' arguments+=Argument[','] ')')? '{'
+    attributes*=Attribute
     '}'
 ;
 
 RequestBody:
-    name=ID ('(' arguments+=Argument[','] ')')? '{'
+    name=ID (body_attributes=BodyAttributes)?
+;
+
+BodyAttributes:
+    '{'
     attributes*=Attribute
     '}'
 ;
@@ -69,10 +83,6 @@ Response:
    (JsonObject | JsonArray)
 ;
 
-Multiplier:
-    '*' '[' multiplier=INT ']'
-;
-
 JsonObject:
 	'{'
 		members*=JsonMember[',']
@@ -84,7 +94,7 @@ JsonMember:
 ;
 
 JsonValue:
-	JsonObject | STRING | JsonArray | BOOL | JsonNull | NUMBER
+	JsonObject  | JsonArray | JsonNull | STRING | INT | FLOAT | BOOL
 ;
 
 JsonValueWithTags:
@@ -92,7 +102,7 @@ JsonValueWithTags:
 ;
 
 JsonArray:
-	'[' (Multiplier)? values*=JsonValueWithTags ']'
+	'[' values*=JsonValueWithTags[','] ']'
 ;
 
 JsonNull:
@@ -112,18 +122,25 @@ RowSeparator:
 ;
 
 ExampleAttributes:
-    '|' attributes*=ExampleAttribute['|'] '|'
+    '||' attributes*=ExampleAttribute['||'] '||'
 ;
 
 ExampleAttribute:
-    SpecialTag | name=ID
+    ('*')? name=ID
 ;
 
 JsonValueWithEmptyValue:
     JsonValue | '*'
 ;
 
+Any:
+    /\|{1}(.*?)\|{1}/
+;
+
 Example:
-    '|' values*=JsonValueWithEmptyValue['|'] '|'
-    RowSeparator?
+    ('|' values*=Any '|')*
+    RowSeparator
+    should?=STRING
+    request_generated?=STRING
+    response_generated?=/(?ms)\"{3}(.*?)\"{3}/
 ;
