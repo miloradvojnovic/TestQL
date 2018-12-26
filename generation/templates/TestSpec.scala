@@ -22,8 +22,8 @@ class {{ class_name }} extends PlaySpec with GraphQLSpec {
                         {{- example.response_generated -}}
                     """
                     ))
+                    }
                   {% endfor %}
-                  }
             {% endfor %}
        }
       {% endfor %}

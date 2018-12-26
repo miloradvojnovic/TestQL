@@ -6,14 +6,15 @@ import os
 
 
 class MainGenerator(object):
-    def __init__(self, generators=[]):
+    def __init__(self, path, generators=[]):
+        self.path = path
         self.generators = generators
 
     def generate(self, template_name, directory, output_name, render_vars):
         env = Environment(trim_blocks=True, lstrip_blocks=True, loader=PackageLoader("generation", "templates"))
         template = env.get_template(template_name)
         rendered = template.render(render_vars)
-        path = os.path.join(root, "output", directory)
+        path = os.path.join(self.path, directory)
         if not os.path.exists(path):
             os.makedirs(path)
         file_name = os.path.join(path, output_name)

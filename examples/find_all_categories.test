@@ -1,0 +1,39 @@
+package:graphql
+class:CategoriesSpec
+scenario:Retrieving information about all categories
+
+request:
+"""
+query findAllCategories {
+  categories {
+    id
+    name
+  }
+}
+"""
+
+response:
+"""
+{
+  "data": {
+    "categories": [
+      {
+        "id": <id>,
+        "name": <name>
+      },
+      {
+        "id": <id>,
+        "name": <name>
+      }
+    ]
+  }
+}
+"""
+
+examples:
+=====================================================
+|| *should 	                 || id || name         ||
+=====================================================
+|| "retrieve all categories" || 1  || "RAM memory" ||
+||            *              || 2  || "SSD disk"   ||
+=====================================================

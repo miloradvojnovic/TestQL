@@ -1,30 +1,35 @@
 from textx import metamodel_from_file
 import os
 from os import listdir
+import click
 
 from generation.generators.main_generator import MainGenerator
 from generation.generators.test_spec_generator import TestSpecGenerator
 from generation.generators.graphql_spec_generator import GraphQLSpecGenerator
 from preprocessor.model_preprocessor import convert_tag_values
 
-metamodel = metamodel_from_file('metamodel/graphQL.tx', use_regexp_group = True)
-metamodel.register_model_processor(convert_tag_values)
-models = {}
+def get_model(path):
+    metamodel = metamodel_from_file('metamodel/graphql.tx', use_regexp_group=True)
+    metamodel_full = metamodel_from_file('metamodel/graphql_validate.tx', use_regexp_group=True)
+    metamodel.register_model_processor(convert_tag_values)
+    models = {}
 
-for file in listdir('metamodel'):
-    package = None
-    if file.endswith('.test'):
-        model = metamodel.model_from_file('metamodel/' + file)
-        if model.package is not None:
-            package = model.package.name
-        if package is None:
-            full_name = model.class_name.name
-        else:
-            full_name = package + '.' + model.class_name.name
-        if full_name not in models:
-            models[full_name] = [model]
-        else:
-            models[full_name].append(model)
+    for file in listdir(path):
+        package = None
+        if file.endswith('.test'):
+            model = metamodel.model_from_file(path + '/' + file)
+            metamodel_full.model_from_file(path + '/' + file)
+            if model.package is not None:
+                package = model.package.name
+            if package is None:
+                full_name = model.class_name.name
+            else:
+                full_name = package + '.' + model.class_name.name
+            if full_name not in models:
+                models[full_name] = [model]
+            else:
+                models[full_name].append(model)
+    return models
 
 def delete_files(path):
     try:
@@ -38,13 +43,19 @@ def delete_files(path):
     except Exception:
         pass
 
-
-if __name__ == '__main__':
-    path = './output'
-    delete_files(path)
-    main_generator = MainGenerator()
+@click.command()
+@click.option('--model', default='./examples', help='Path to the model directory.')
+@click.option('--output', default='./output', help='Path to the output directory.')
+def run(model, output):
+    delete_files(output + '/test')
+    main_generator = MainGenerator(output)
     graphql_spec_generator = GraphQLSpecGenerator(main_generator)
     test_spec_generator = TestSpecGenerator(main_generator)
     main_generator.add_generator(test_spec_generator)
     main_generator.add_generator(graphql_spec_generator)
-    main_generator.generate_all(models)
+    main_generator.generate_all(get_model(model))
+
+
+
+if __name__ == '__main__':
+    run()

@@ -1,0 +1,58 @@
+package:graphql
+class:CategoriesSpec
+scenario:Creating new category
+
+request:
+"""
+mutation createCategory {
+  createCategory(input: {name: <name>}) {
+    id
+    name
+  }
+}
+"""
+
+
+response:
+"""
+{
+  "data": {
+    "createCategory":
+      {
+        "id": <id>,
+        "name": <name>
+      }
+  }
+}
+"""
+
+
+examples:
+==========================================================
+|| *should                        || id || name         ||
+==========================================================
+|| "create category successfully" || 1  || "RAM memory" ||
+==========================================================
+
+
+response:
+"""
+{
+  "data": null,
+  "errors": [
+    {
+      "message": <message>,
+      "type": <type>,
+      "path": <path>,
+      "locations": <locations>
+    }
+  ]
+}
+"""
+
+examples:
+========================================================================================================================================================================================
+|| *should                                             ||  name        || message                                   || type         || path               || locations                ||
+========================================================================================================================================================================================
+|| "not create category because uniqueness constraint" || "Processors" || "Category with same name already exists." || "BadRequest" || ["createCategory"] || [{"line":3,"column":23}] ||
+========================================================================================================================================================================================

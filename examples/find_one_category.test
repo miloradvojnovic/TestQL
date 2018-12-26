@@ -1,0 +1,50 @@
+package:graphql
+class:CategoriesSpec
+scenario:Retrieving information about one category
+
+request:
+"""
+query findOneCategory {
+  category(id: <id>) {
+    id
+    name
+  }
+}
+"""
+
+response:
+"""
+{
+  "data": {
+    "category":
+      {
+        "id": <id>,
+        "name": <name>
+      }
+  }
+}
+"""
+
+examples:
+=============================================================
+|| *should                           || id || name         ||
+=============================================================
+|| "retrieve category with given id" || 1  || "RAM memory" ||
+=============================================================
+
+
+response:
+"""
+{
+  "data": {
+    "category": null
+  }
+}
+"""
+
+examples:
+=================================================================
+|| *should                                               || id ||
+=================================================================
+|| "retrieve that category with given id does not exist" || 2  ||
+=================================================================

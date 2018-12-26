@@ -14,19 +14,15 @@ import scala.concurrent.duration._
 
 trait GraphQLSpec extends PlaySpec with DataSpec with ScalaFutures {
 
-  def executeQuery(
-      query: Document,
-      variables: JsObject = JsObject.empty
-  ): JsValue = {
+  def executeQuery(query: Document): JsValue = {
     val executor = Executor(
       schema = schema,
       exceptionHandler = exceptionHandler
     )
 
     executor
-      .execute(query, ctx, (), variables = variables)
+      .execute(query, ctx, ())
       .futureValue(Timeout(10.seconds))
 
   }
 }
-
