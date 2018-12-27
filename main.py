@@ -5,7 +5,6 @@ import click
 
 from generation.generators.main_generator import MainGenerator
 from generation.generators.test_spec_generator import TestSpecGenerator
-from generation.generators.graphql_spec_generator import GraphQLSpecGenerator
 from preprocessor.model_preprocessor import convert_tag_values
 
 def get_model(path):
@@ -49,10 +48,8 @@ def delete_files(path):
 def run(model, output):
     delete_files(output + '/test')
     main_generator = MainGenerator(output)
-    graphql_spec_generator = GraphQLSpecGenerator(main_generator)
     test_spec_generator = TestSpecGenerator(main_generator)
     main_generator.add_generator(test_spec_generator)
-    main_generator.add_generator(graphql_spec_generator)
     main_generator.generate_all(get_model(model))
 
 

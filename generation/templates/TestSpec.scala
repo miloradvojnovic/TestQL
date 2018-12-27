@@ -1,11 +1,13 @@
 package {{ package }}
 
+import graphql.manual.DataSpec
 import org.scalatest.Matchers._
-import org.scalatestplus.play.PlaySpec
+import org.scalatest.WordSpec
 import play.api.libs.json._
 import sangria.macros._
 
-class {{ class_name }} extends PlaySpec with GraphQLSpec {
+
+class {{ class_name }} extends WordSpec with DataSpec {
   "{{ class_name -}}" when {
       {% for model in models %}
       "{{ model.scenario.name.strip() }}" should {

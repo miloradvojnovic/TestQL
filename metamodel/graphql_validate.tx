@@ -28,7 +28,7 @@ Case:
 Request:
     '"""'
     type=RequestType name=ID '{'
-    body=RequestBodyWithArgs
+    attributes*=Attribute
     '}'
     '"""'
 ;
@@ -54,7 +54,7 @@ BodyAttributes:
 ;
 
 Attribute:
-    name=ID ('{' body=RequestBody '}')?
+    name=ID('(' arguments+=Argument[','] ')')? ('{' attributes*=Attribute '}')?
 ;
 
 Argument:
