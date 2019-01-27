@@ -3,46 +3,33 @@ class:CategoriesSpec
 scenario:Retrieving all categories by search parameter
 
 request:
-"""
 query searchCategories {
   searchCategories(name: <search>) {
     id
     name
   }
 }
-"""
 
 response:
-"""
 {
   "data": {
     "searchCategories": [
-      {
-        "id": <id>,
-        "name": <name>
-      },
-      {
-        "id": <id>,
-        "name": <name>
-      },
-      {
+      [<num>]{
         "id": <id>,
         "name": <name>
       }
     ]
   }
 }
-"""
 
 examples:
-========================================================================================================
-|| *should 	                                              || search     || id || name                 ||
-========================================================================================================
-|| "retrieve all categories that have 'intel' in name"    ||  "intel"   || 1  ||  "Intel i5-7540X"    ||
-||            *                                           ||     *      || 2  ||  "Intel i7-7740X"    ||
-||            *                                           ||     *      || 3  ||  "Intel i9-7940X"    ||
-========================================================================================================
-|| "retrieve all categories that have 'kingston' in name" || "kingston" || 1  || "Kingston SSD 120GB" ||
-||            *                                           ||     *      || 2  || "Kingston SSD 240GB" ||
-||            *                                           ||     *      || 3  || "Kingston SSD 480GB" ||
-========================================================================================================
+==========================================================================================================
+| *should 	                                              | search     | num | id | name                 |
+==========================================================================================================
+| "retrieve all categories that have 'intel' in name"     |  "intel"   |  3  | 1  |  "Intel i5-7540X"    |
+|            *                                            |     *      |  *  | 2  |  "Intel i7-7740X"    |
+|            *                                            |     *      |  *  | 3  |  "Intel i9-7940X"    |
+==========================================================================================================
+| "retrieve all categories that have 'kingston' in name"  | "kingston" |  2  | 1  | "Kingston SSD 120GB" |
+|            *                                            |     *      |  *  | 2  | "Kingston SSD 240GB" |
+==========================================================================================================

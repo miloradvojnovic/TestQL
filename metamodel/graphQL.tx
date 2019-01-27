@@ -3,7 +3,7 @@ Test:
     class_name=Class
     scenario=Scenario
     'request' ':'
-    request=/(?ms)\"{3}(.*?)\"{3}/ //Request
+    request=Request
     cases*=Case
 ;
 
@@ -21,42 +21,26 @@ Scenario:
 
 Case:
     'response' ':'
-    response=/(?ms)\"{3}(.*?)\"{3}/    //Response
+    response=Response
     examples=Examples
 ;
 
 Request:
     type=RequestType name=ID '{'
-    body=RequestBodyWithArgs
+    attributes*=Attribute
     '}'
 ;
 
 RequestType:
-    name='query' | 'mutation'
-;
-
-RequestBodyWithArgs:
-    name=ID ('(' arguments+=Argument[','] ')')? '{'
-    attributes*=Attribute
-    '}'
-;
-
-RequestBody:
-    name=ID (body_attributes=BodyAttributes)?
-;
-
-BodyAttributes:
-    '{'
-    attributes*=Attribute
-    '}'
+    'query' | 'mutation'
 ;
 
 Attribute:
-    name=ID ('{' body=RequestBody '}')?
+    name=ID('(' arguments+=Argument[','] ')')? ('{' attributes*=Attribute '}')?
 ;
 
 Argument:
-    name=ID ':' ArgumentValue
+    name=ID ':' value=ArgumentValue
 ;
 
 ArgumentValue:
@@ -80,7 +64,11 @@ SpecialTag:
 ;
 
 Response:
-   (JsonObject | JsonArray)
+   json=JsonObject
+;
+
+Json:
+    (JsonObject | JsonArray)
 ;
 
 JsonObject:
@@ -98,15 +86,23 @@ JsonValue:
 ;
 
 JsonValueWithTags:
-    JsonValue | TagValue | SpecialTag
+    JsonValue | TagValue
+;
+
+MultiplierValue:
+    INT | TagValue
+;
+
+Multiplier:
+    '[' value = MultiplierValue ']'
 ;
 
 JsonArray:
-	'[' values*=JsonValueWithTags[','] ']'
+	'[' (multiplier=Multiplier)? values*=JsonValueWithTags[','] ']'
 ;
 
 JsonNull:
-  'null'
+  value='null'
 ;
 
 Examples:
@@ -122,7 +118,7 @@ RowSeparator:
 ;
 
 ExampleAttributes:
-    '||' attributes*=ExampleAttribute['||'] '||'
+    '|' attributes*=ExampleAttribute['|'] '|'
 ;
 
 ExampleAttribute:
@@ -133,14 +129,7 @@ JsonValueWithEmptyValue:
     JsonValue | '*'
 ;
 
-Any:
-    /\|{1}(.*?)\|{1}/
-;
-
 Example:
-    ('|' values*=Any '|')*
+    ('|' values*=JsonValueWithEmptyValue['|'] '|')*
     RowSeparator
-    should?=STRING
-    request_generated?=STRING
-    response_generated?=/(?ms)\"{3}(.*?)\"{3}/
 ;

@@ -5,19 +5,14 @@ import click
 
 from generation.generators.main_generator import MainGenerator
 from generation.generators.test_spec_generator import TestSpecGenerator
-from preprocessor.model_preprocessor import convert_tag_values
 
 def get_model(path):
-    metamodel = metamodel_from_file('metamodel/graphql.tx', use_regexp_group=True)
-    metamodel_full = metamodel_from_file('metamodel/graphql_validate.tx', use_regexp_group=True)
-    metamodel.register_model_processor(convert_tag_values)
+    metamodel = metamodel_from_file('metamodel/graphql.tx')
     models = {}
-
     for file in listdir(path):
         package = None
         if file.endswith('.test'):
             model = metamodel.model_from_file(path + '/' + file)
-            metamodel_full.model_from_file(path + '/' + file)
             if model.package is not None:
                 package = model.package.name
             if package is None:
