@@ -35,9 +35,8 @@ response:
 }
 
 examples:
-=====================================================================================================================================================
-| *should 	            | id | username          | firstName  | lastName   | address        | phone         | email                        | money  |
-=====================================================================================================================================================
-| "retrieve all users"  | 1  | "miloradvojnovic" | "Milorad"  | "Vojnovic" | "Puskinova 27" | "06978954558" | "milorad.vojnovic@gmail.com" | 100000 |
-|            *          | 2  | "zikazikic"       | "Zika"     | "Zikic"    | "Puskinova 27" | "06978954558" | "zika.zikic@gmail.com"       | 100000 |
-=====================================================================================================================================================
+
+| should               | id  | username          | firstName | lastName   | address        | phone         | email                        | money  |
+| -------------------- | --- | ----------------- | --------- | ---------- | -------------- | ------------- | ---------------------------- | ------ |
+| "retrieve all users" | 1   | "miloradvojnovic" | "Milorad" | "Vojnovic" | "Puskinova 27" | "06978954558" | "milorad.vojnovic@gmail.com" | 100000 |
+| *                    | 2   | "zikazikic"       | "Zika"    | "Zikic"    | "Puskinova 27" | "06978954558" | "zika.zikic@gmail.com"       | 100000 |

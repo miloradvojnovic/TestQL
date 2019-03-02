@@ -6,30 +6,29 @@ import org.scalatest.WordSpec
 import play.api.libs.json._
 import sangria.macros._
 
-
 class {{ class_name }} extends WordSpec with DataSpec {
-    "{{ class_name }}" when {
-      {% for model in models %}
-        "{{ model.scenario.name.strip() }}" should {
-          {% for case in model.cases %}
-            {% for example in case.examples.examples %}
-              {% set ex_loop = loop %}
-              {% for att in case.examples.attributes.attributes -%}
-                {% if att.name == 'should' %}
-                  {% set should_index = loop.index %}
-                {% endif %}
-                {% if should_index is defined %}
-                  {% for value in example.values %}
-                    {% if loop.index == should_index %}
-            "{{ value }}"
-                    {%- endif -%}
-                  {%- endfor -%}
-                {%- endif -%}
-              {%- endfor %} in {
-              {% set ns = namespace(compound=False, indentation=28, multipliers = [], begin_brace = '{', end_brace = '}', arr_begin_brace = '[', arr_end_brace = ']', quotation_mark = '"') %}
-                val query =
-                    graphql"""
-                       {{model.request.type }} {{ model.request.name }} {
+  "{{ class_name }}" when {
+    {% for model in models %}
+    "{{ model.scenario.name.strip() }}" should {
+        {% for case in model.cases %}
+          {% for example in case.examples.examples %}
+            {% set ex_loop = loop %}
+            {% for att in case.examples.attributes.attributes -%}
+              {% if att.name == 'should' %}
+                {% set should_index = loop.index %}
+              {% endif %}
+              {% if should_index is defined %}
+                {% for value in example.values %}
+                  {% if loop.index == should_index %}
+      "{{ value }}"
+                  {%- endif -%}
+                {%- endfor -%}
+              {%- endif -%}
+            {%- endfor %} in {
+            {% set ns = namespace(compound=False, indentation=24, multipliers = [], begin_brace = '{', end_brace = '}', arr_begin_brace = '[', arr_end_brace = ']', quotation_mark = '"') %}
+        val query =
+          graphql"""
+                    {{model.request.type }} {{ model.request.name }} {
                           {% for attribute in model.request.attributes recursive %}
                             {%- if attribute.arguments|length > 0 %}
 {{ attribute.name|indent(ns.indentation, True) }}(
@@ -72,12 +71,12 @@ class {{ class_name }} extends WordSpec with DataSpec {
 {{ns.end_brace|indent(ns.indentation, True)}}
                             {% endif %}
                           {% endfor %}
-                        }
-                  """
+                    }
+                 """
                   {% set ns.indentation=26 %}
-                    executeQuery(query) should be(
-                    Json.parse(
-                    """
+        executeQuery(query) should be(
+          Json.parse(
+            """
                       {
                             {% for member in case.response.json.members recursive -%}
                               {% set member_loop = loop %}
@@ -209,12 +208,13 @@ loop(value.values)
                               {% endif %} 
                             {% endfor %}
                       }
-                    """
-                    ))
-                    }
+                   """
+          )
+        )
+      }
                   {% endfor %}
             {% endfor %}
-       }
-      {% endfor %}
     }
+      {% endfor %}
+  }
 }

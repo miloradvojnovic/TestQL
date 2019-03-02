@@ -59,16 +59,8 @@ TagValue:
     '<' name=ID '>'
 ;
 
-SpecialTag:
-    '*' name=ID
-;
-
 Response:
    json=JsonObject
-;
-
-Json:
-    (JsonObject | JsonArray)
 ;
 
 JsonObject:
@@ -107,14 +99,12 @@ JsonNull:
 
 Examples:
     'examples' ':'
-    RowSeparator
     attributes=ExampleAttributes
-    RowSeparator
     examples*=Example
 ;
 
 RowSeparator:
-    ('=')+
+    '| ' (('-')+ ' |')+ 
 ;
 
 ExampleAttributes:
@@ -122,7 +112,7 @@ ExampleAttributes:
 ;
 
 ExampleAttribute:
-    ('*')? name=ID
+    name=ID
 ;
 
 JsonValueWithEmptyValue:
@@ -130,6 +120,6 @@ JsonValueWithEmptyValue:
 ;
 
 Example:
-    ('|' values*=JsonValueWithEmptyValue['|'] '|')*
     RowSeparator
+    ('|' values*=JsonValueWithEmptyValue['|'] '|')*
 ;
