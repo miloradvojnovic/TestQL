@@ -1,0 +1,44 @@
+type Category {
+  id: Long!
+  name: String!
+}
+
+input CreateCategoryInput {
+  name: String!
+  superCategoryId: Long
+}
+
+input CreateUserInput {
+  username: String!
+  password: String!
+  firstName: String!
+  lastName: String!
+  address: String!
+  phone: String!
+  email: String!
+  money: Float!
+}
+
+type Mutation {
+  createUser(input: CreateUserInput!): User!
+  createCategory(input: CreateCategoryInput!): Category!
+}
+
+type Query {
+  users: [User!]!
+  user(id: Long!): User
+  categories: [Category!]!
+  category(id: Long!): Category
+  searchCategories(name: String!): [Category!]!
+}
+
+type User {
+  id: Long!
+  username: String!
+  firstName: String!
+  lastName: String!
+  address: String!
+  phone: String!
+  email: String!
+  money: Float!
+}

@@ -1,36 +1,49 @@
 package:graphql
 class:UsersSpec
-scenario:Creating new user
+scenario:creating new user
 
 request:
-mutation createUser {
-  createUser(input: {username: <username>, password: <password>, firstName: <firstName>, lastName: <lastName>, address: <address>, phone: <phone>, email: <email>, money: <money>}) {
-    id
-    username
-    firstName
-    lastName
-    address
-    phone
-    email
-    money
-  }
-}
+```graphql
+    mutation createUser {
+        createUser(
+            input: {
+                username: <username>,
+                password: <password>,
+                firstName: <firstName>,
+                lastName: <lastName>,
+                address: <address>,
+                phone: <phone>,
+                email: <email>,
+                money: <money>
+            }
+        ) {
+            id
+            username
+            firstName
+            lastName
+            address
+            phone
+            email
+            money
+        }
+    }
+```
 
 response:
 {
-  "data": {
-    "createUser":
-      {
-        "id": <id>,
-        "username": <username>,
-        "firstName": <firstName>,
-        "lastName": <lastName>,
-        "address": <address>,
-        "phone": <phone>,
-        "email": <email>,
-        "money": <money>
-      }
-  }
+	"data": {
+		"createUser":
+			{
+				"id": <id>,
+				"username": <username>,
+				"firstName": <firstName>,
+				"lastName": <lastName>,
+				"address": <address>,
+				"phone": <phone>,
+				"email": <email>,
+				"money": <money>
+			}
+	}
 }
 
 examples:
@@ -42,15 +55,15 @@ examples:
 
 response:
 {
-  "data": null,
-  "errors": [
-    {
-      "message": <message>,
-      "path": <path>,
-      "locations": <locations>,
-      "type": <type>
-    }
-  ]
+	"data": null,
+	"errors": [
+		{
+			"message": <message>,
+			"path": <path>,
+			"locations": <locations>,
+			"type": <type>
+		}
+	]
 }
 
 examples:

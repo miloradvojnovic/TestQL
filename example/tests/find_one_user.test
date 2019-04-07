@@ -1,20 +1,24 @@
 package:graphql
 class:UsersSpec
-scenario:Retrieving information about one user
+scenario:retrieving information about one user
 
 request:
-query findOneUser {
-  user(id: <id>) {
-    id
-    username
-    firstName
-    lastName
-    address
-    phone
-    email
-    money
-  }
-}
+```graphql
+    query findOneUser {
+        user(
+            id: <id>
+        ) {
+            id
+            username
+            firstName
+            lastName
+            address
+            phone
+            email
+            money
+        }
+    }
+```
 
 response:
 {

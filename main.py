@@ -6,23 +6,23 @@ import click
 from generation.generators.main_generator import MainGenerator
 from generation.generators.test_spec_generator import TestSpecGenerator
 
-def get_model(path):
+def get_model(path, models={}):
     metamodel = metamodel_from_file('metamodel/graphql.tx')
-    models = {}
-    for file in listdir(path):
-        package = None
-        if file.endswith('.test'):
-            model = metamodel.model_from_file(path + '/' + file)
-            if model.package is not None:
-                package = model.package.name
-            if package is None:
-                full_name = model.class_name.name
-            else:
-                full_name = package + '.' + model.class_name.name
-            if full_name not in models:
-                models[full_name] = [model]
-            else:
-                models[full_name].append(model)
+    for r, d, f in os.walk(path):
+        for file in f:
+            package = None
+            if file.endswith('.test'):
+                model = metamodel.model_from_file(os.path.join(r, file))
+                if model.package is not None:
+                    package = model.package.name
+                if package is None:
+                    full_name = model.class_name.name
+                else:
+                    full_name = package + '.' + model.class_name.name
+                if full_name not in models:
+                    models[full_name] = [model]
+                else:
+                    models[full_name].append(model)
     return models
 
 def delete_files(path):
@@ -38,7 +38,7 @@ def delete_files(path):
         pass
 
 @click.command()
-@click.option('--model', default='./examples', help='Path to the model directory.')
+@click.option('--model', default='./example', help='Path to the model directory.')
 @click.option('--output', default='./output', help='Path to the output directory.')
 def run(model, output):
     delete_files(output + '/test')

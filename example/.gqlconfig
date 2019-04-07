@@ -1,0 +1,23 @@
+{
+  "schema": {
+    "files": "**/*.gql"
+  },
+  "query": {
+    "files": [
+      {
+        "match": "**/*.gql",
+        "parser": "QueryParser"
+      },
+      {
+          "match": "tests/**/*.test",
+          "parser": [
+            "EmbeddedQueryParser",
+            {
+              "startTag": "```graphql",
+              "endTag": "```"
+            }
+          ]
+        }
+    ]
+  }
+}

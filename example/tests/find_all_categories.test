@@ -1,25 +1,27 @@
 package:graphql
 class:CategoriesSpec
-scenario:Retrieving information about all categories
+scenario:retrieving information about all categories
 
 request:
-query findAllCategories {
-  categories {
-    id
-    name
-  }
-}
+```graphql
+    query findAllCategories {
+        categories {
+            id
+            name
+        }
+    }
+```
 
 response:
 {
-  "data": {
-    "categories": [
-      [2]{
-        "id": <id>,
-        "name": <name>
-      }
-    ]
-  }
+	"data": {
+		"categories": [
+			[2]{
+				"id": <id>,
+				"name": <name>
+			}
+		]
+	}
 }
 
 examples:

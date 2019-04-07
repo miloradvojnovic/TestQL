@@ -1,20 +1,22 @@
 package:graphql
 class:UsersSpec
-scenario:Retrieving information about all users
+scenario:retrieving information about all users
 
 request:
-query findAllUsers {
-  users {
-    id
-    username
-    firstName
-    lastName
-    address
-    phone
-    email
-    money
-  }
-}
+```graphql
+    query findAllUsers {
+        users {
+            id
+            username
+            firstName
+            lastName
+            address
+            phone
+            email
+            money
+        }
+    }
+```
 
 response:
 {

@@ -26,9 +26,11 @@ Case:
 ;
 
 Request:
+    '```graphql'
     type=RequestType name=ID '{'
     attributes*=Attribute
     '}'
+    '```'
 ;
 
 RequestType:

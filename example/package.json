@@ -1,0 +1,10 @@
+{
+    "name": "graphql-test-generator",
+    "version": "1.0.0",
+    "main": "index.js",
+    "license": "MIT",
+    "devDependencies": {
+      "@playlyfe/gql": "^2.6.1"
+    }
+  }
+  

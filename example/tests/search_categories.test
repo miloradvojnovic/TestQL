@@ -1,14 +1,18 @@
 package:graphql
 class:CategoriesSpec
-scenario:Retrieving all categories by search parameter
+scenario:retrieving all categories by search parameter
 
 request:
-query searchCategories {
-  searchCategories(name: <search>) {
-    id
-    name
-  }
-}
+```graphql
+    query searchCategories {
+        searchCategories(
+            name: <search>
+        ) {
+            id
+            name
+        }
+    }
+```
 
 response:
 {

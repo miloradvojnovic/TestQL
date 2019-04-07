@@ -1,14 +1,18 @@
 package:graphql
 class:CategoriesSpec
-scenario:Retrieving information about one category
+scenario:eetrieving information about one category
 
 request:
-query findOneCategory {
-  category(id: <id>) {
-    id
-    name
-  }
-}
+```graphql
+    query findOneCategory {
+        category(
+            id: <id>
+        ){
+            id
+            name
+        }
+    }
+```
 
 response:
 {
