@@ -4,50 +4,52 @@ scenario:creating new category
 
 request:
 ```graphql
-    mutation createCategory {
-        createCategory(
-            input: {
-                name: <name>
-            }
-        ) {
-            id
-            name
+mutation createCategory {
+    createCategory(
+        input: {
+            name: <name>
         }
+    ) {
+        id
+        name
     }
+}
 ```
 
 response:
+```json
 {
-	"data": {
-		"createCategory":
-			{
-				"id": <id>,
-				"name": <name>
-			}
-	}
+    "data": {
+        "createCategory":
+            {
+                "id": <id>,
+                "name": <name>
+            }
+    }
 }
+```
 
 examples:
-
 | should                         | id  | name         |
 | ------------------------------ | --- | ------------ |
 | "create category successfully" | 1   | "RAM memory" |
 
 response:
+```json
 {
-	"data": null,
-	"errors": [
-		{
-			"message": <message>,
-			"type": <type>,
-			"path": <path>,
-			"locations": <locations>
-		}
-	]
+    "data": null,
+    "errors": [
+        {
+            "message": <message>,
+            "type": <type>,
+            "path": <path>,
+            "locations": <locations>
+        }
+    ]
 }
+```
 
 examples:
-
 | should                                              | name         | message                                   | type         | path               | locations                |
 | --------------------------------------------------- | ------------ | ----------------------------------------- | ------------ | ------------------ | ------------------------ |
 | "not create category because uniqueness constraint" | "Processors" | "Category with same name already exists." | "BadRequest" | ["createCategory"] | [{"line":3,"column":25}] |

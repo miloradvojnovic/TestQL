@@ -4,27 +4,28 @@ scenario:retrieving information about one user
 
 request:
 ```graphql
-    query findOneUser {
-        user(
-            id: <id>
-        ) {
-            id
-            username
-            firstName
-            lastName
-            address
-            phone
-            email
-            money
-        }
+query findOneUser {
+    user(
+        id: <id>
+    ) {
+        id
+        username
+        firstName
+        lastName
+        address
+        phone
+        email
+        money
     }
+}
 ```
 
 response:
+```json
 {
-  "data": {
+    "data": {
     "user":
-      {
+        {
         "id": <id>,
         "username": <username>,
         "firstName": <firstName>,
@@ -33,26 +34,27 @@ response:
         "phone": <phone>,
         "email": <email>,
         "money": <money>
-      }
-  }
+        }
+    }
 }
+```
 
 examples:
-
 | should                        | id  | username          | firstName | lastName   | address        | phone         | email                        | money  |
 | ----------------------------- | --- | ----------------- | --------- | ---------- | -------------- | ------------- | ---------------------------- | ------ |
 | "retrieve user with given id" | 1   | "miloradvojnovic" | "Milorad" | "Vojnovic" | "Puskinova 27" | "06978954558" | "milorad.vojnovic@gmail.com" | 100000 |
 
 
 response:
+```json
 {
-  "data": {
+    "data": {
     "user": null
-  }
+    }
 }
+```
 
 examples:
-
 | should                                            | id  |
 | ------------------------------------------------- | --- |
 | "retrieve that user with given id does not exist" | 2   |

@@ -2,25 +2,25 @@ Test:
     package=Package
     class_name=Class
     scenario=Scenario
-    'request' ':'
+    /(#{1,6} )?request/ ':'
     request=Request
     cases*=Case
 ;
 
 Package:
-    'package' ':' name=/[a-z][a-z0-9_]*((\.[a-z0-9_]+)+[0-9a-z_])?/
+    /(#{1,6} )?package/ ':' name=/[a-z][a-z0-9_]*((\.[a-z0-9_]+)+[0-9a-z_])?/
 ;
 
 Class:
-    'class' ':' name=ID
+    /(#{1,6} )?class/ ':' name=ID
 ;
 
 Scenario:
-    'scenario' ':' name=/[A-Za-z0-9].*/
+    /(#{1,6} )?scenario/ ':' name=/[A-Za-z0-9].*/
 ;
 
 Case:
-    'response' ':'
+    /(#{1,6} )?response/ ':'
     response=Response
     examples=Examples
 ;
@@ -62,7 +62,9 @@ TagValue:
 ;
 
 Response:
-   json=JsonObject
+    '```json'
+    json=JsonObject
+    '```'
 ;
 
 JsonObject:
@@ -100,7 +102,7 @@ JsonNull:
 ;
 
 Examples:
-    'examples' ':'
+    /(#{1,6} )?examples/ ':'
     attributes=ExampleAttributes
     examples*=Example
 ;

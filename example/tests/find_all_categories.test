@@ -4,28 +4,29 @@ scenario:retrieving information about all categories
 
 request:
 ```graphql
-    query findAllCategories {
-        categories {
-            id
-            name
-        }
+query findAllCategories {
+    categories {
+        id
+        name
     }
+}
 ```
 
 response:
+```json
 {
-	"data": {
-		"categories": [
-			[2]{
-				"id": <id>,
-				"name": <name>
-			}
-		]
-	}
+    "data": {
+        "categories": [
+            [2]{
+                "id": <id>,
+                "name": <name>
+            }
+        ]
+    }
 }
+```
 
 examples:
-
 | should                    | id  | name         |
 | ------------------------- | --- | ------------ |
 | "retrieve all categories" | 1   | "RAM memory" |

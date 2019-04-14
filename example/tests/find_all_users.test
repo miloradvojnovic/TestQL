@@ -4,40 +4,41 @@ scenario:retrieving information about all users
 
 request:
 ```graphql
-    query findAllUsers {
-        users {
-            id
-            username
-            firstName
-            lastName
-            address
-            phone
-            email
-            money
-        }
+query findAllUsers {
+    users {
+        id
+        username
+        firstName
+        lastName
+        address
+        phone
+        email
+        money
     }
+}
 ```
 
 response:
+```json
 {
-  "data": {
-    "users": [
-      [2]{
-        "id": <id>,
-        "username": <username>,
-        "firstName": <firstName>,
-        "lastName": <lastName>,
-        "address": <address>,
-        "phone": <phone>,
-        "email": <email>,
-        "money": <money>
-      }
-    ]
-  }
+    "data": {
+        "users": [
+        [2]{
+            "id": <id>,
+            "username": <username>,
+            "firstName": <firstName>,
+            "lastName": <lastName>,
+            "address": <address>,
+            "phone": <phone>,
+            "email": <email>,
+            "money": <money>
+        }
+        ]
+    }
 }
+```
 
 examples:
-
 | should               | id  | username          | firstName | lastName   | address        | phone         | email                        | money  |
 | -------------------- | --- | ----------------- | --------- | ---------- | -------------- | ------------- | ---------------------------- | ------ |
 | "retrieve all users" | 1   | "miloradvojnovic" | "Milorad" | "Vojnovic" | "Puskinova 27" | "06978954558" | "milorad.vojnovic@gmail.com" | 100000 |

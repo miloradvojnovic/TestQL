@@ -4,29 +4,30 @@ scenario:eetrieving information about one category
 
 request:
 ```graphql
-    query findOneCategory {
-        category(
-            id: <id>
-        ){
-            id
-            name
-        }
+query findOneCategory {
+    category(
+        id: <id>
+    ){
+        id
+        name
     }
+}
 ```
 
 response:
+```json
 {
-  "data": {
+    "data": {
     "category":
-      {
+        {
         "id": <id>,
         "name": <name>
-      }
-  }
+        }
+    }
 }
+```
 
 examples:
-
 | should                            | id  | name         |
 | --------------------------------- | --- | ------------ |
 | "retrieve category with given id" | 1   | "RAM memory" |
@@ -34,14 +35,15 @@ examples:
 
 
 response:
+```json
 {
-  "data": {
+    "data": {
     "category": null
-  }
+    }
 }
+```
 
 examples:
-
 | should                                                | id  |
 | ----------------------------------------------------- | --- |
 | "retrieve that category with given id does not exist" | 2   |
