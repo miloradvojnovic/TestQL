@@ -1,6 +1,6 @@
 package:graphql
 class:CategoriesSpec
-scenario:eetrieving information about one category
+scenario:retrieving information about one category
 
 request:
 ```graphql
