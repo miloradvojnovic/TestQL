@@ -1,0 +1,3 @@
+GET     /                           controller.HomeController.index
+
+POST    /graphql                    controller.GraphQLController.graphql()

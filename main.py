@@ -49,7 +49,7 @@ def delete_files(path):
 
 @click.command()
 @click.option('--model', default='./example', help='Path to the model directory.')
-@click.option('--output', default='./output', help='Path to the output directory.')
+@click.option('--output', default='./example/output', help='Path to the output directory.')
 def run(model, output):
     delete_files(output + '/test')
     main_generator = MainGenerator(output)

@@ -107,6 +107,12 @@ venv.bak/
 .idea
 
 # Project
-/output
 /example/node_modules
 yarn.lock
+/example/output/.idea
+/example/output/project/project
+/example/output/project/target
+/example/output/target
+!/example/output/test/graphql
+/example/output/test/graphql/*
+!/example/output/test/graphql/manual
