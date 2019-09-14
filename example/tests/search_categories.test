@@ -23,7 +23,7 @@ response:
         "id": <id>,
         "name": <name>
         }
-    ]
+	]
     }
 }
 ```

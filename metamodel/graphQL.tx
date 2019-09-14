@@ -2,9 +2,8 @@ Test:
     package=Package
     class_name=Class
     scenario=Scenario
-    /(#{1,6} )?request/ ':'
     request=Request
-    cases*=Case
+    cases+=Case
 ;
 
 Package:
@@ -19,16 +18,11 @@ Scenario:
     /(#{1,6} )?scenario/ ':' name=/[A-Za-z0-9].*/
 ;
 
-Case:
-    /(#{1,6} )?response/ ':'
-    response=Response
-    examples=Examples
-;
-
 Request:
+	/(#{1,6} )?request/ ':'
     '```graphql'
     type=RequestType name=ID '{'
-    attributes*=Attribute
+    attributes+=Attribute
     '}'
     '```'
 ;
@@ -38,7 +32,7 @@ RequestType:
 ;
 
 Attribute:
-    name=ID('(' arguments+=Argument[','] ')')? ('{' attributes*=Attribute '}')?
+    name=ID('(' arguments+=Argument[','] ')')? ('{' attributes+=Attribute '}')?
 ;
 
 Argument:
@@ -54,76 +48,80 @@ SimpleValue:
 ;
 
 CompoundValue:
-    '{' (arguments*=Argument[','])? '}'
+    '{' (arguments+=Argument[','])? '}'
 ;
 
 TagValue:
     '<' name=ID '>'
 ;
 
+Case:
+    response=Response
+    examples=Examples
+;
+
 Response:
+    /(#{1,6} )?response/ ':'
     '```json'
     json=JsonObject
     '```'
 ;
 
 JsonObject:
-	'{'
-		members*=JsonMember[',']
-	'}'
+	'{' members+=JsonMember[','] '}'
 ;
 
 JsonMember:
 	key=STRING ':' value=JsonValueWithTags
 ;
 
-JsonValue:
-	JsonObject  | JsonArray | JsonNull | STRING | INT | FLOAT | BOOL
-;
-
 JsonValueWithTags:
     JsonValue | TagValue
 ;
 
-MultiplierValue:
-    INT | TagValue
-;
-
-Multiplier:
-    '[' value = MultiplierValue ']'
+JsonValue:
+	JsonObject  | JsonArray | JsonNull | SimpleValue
 ;
 
 JsonArray:
 	'[' (multiplier=Multiplier)? values*=JsonValueWithTags[','] ']'
 ;
 
+Multiplier:
+    '[' value=MultiplierValue ']'
+;
+
+MultiplierValue:
+    INT | TagValue
+;
+
 JsonNull:
-  value='null'
+	value='null'
 ;
 
 Examples:
     /(#{1,6} )?examples/ ':'
     attributes=ExampleAttributes
-    examples*=Example
-;
-
-RowSeparator:
-    '| ' (('-')+ ' |')+ 
+    examples+=Example
 ;
 
 ExampleAttributes:
-    '|' attributes*=ExampleAttribute['|'] '|'
+    '|' attributes+=ExampleAttribute['|'] '|'
 ;
 
 ExampleAttribute:
     name=ID
 ;
 
-JsonValueWithEmptyValue:
-    JsonValue | '*'
-;
-
 Example:
     RowSeparator
-    ('|' values*=JsonValueWithEmptyValue['|'] '|')*
+    ('|' values+=JsonValueWithEmptyValue['|'] '|')+
+;
+
+RowSeparator:
+    '|' (('-')+ '|')+ 
+;
+
+JsonValueWithEmptyValue:
+    JsonValue | '*'
 ;

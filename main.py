@@ -6,10 +6,12 @@ import click
 from generation.generators.main_generator import MainGenerator
 from generation.generators.test_spec_generator import TestSpecGenerator
 from generation.generators.semantics import *
+from test_case_matcher import TestCaseMatcher
 
 
 
-def get_model(path, models={}):
+def get_model(path):
+    matcher = TestCaseMatcher()
     metamodel = metamodel_from_file('metamodel/graphql.tx')
     obj_processors = {
         'Request': request_obj_processor, 
@@ -18,22 +20,7 @@ def get_model(path, models={}):
         }
     metamodel.register_obj_processors(obj_processors)
     metamodel.register_model_processor(check_some_semantics)
-    for r, d, f in os.walk(path):
-        for file in f:
-            package = None
-            if file.endswith('.test'):
-                model = metamodel.model_from_file(os.path.join(r, file))
-                if model.package is not None:
-                    package = model.package.name
-                if package is None:
-                    full_name = model.class_name.name
-                else:
-                    full_name = package + '.' + model.class_name.name
-                if full_name not in models:
-                    models[full_name] = [model]
-                else:
-                    models[full_name].append(model)
-    return models
+    return matcher.match(path, metamodel)
 
 def delete_files(path):
     try:
